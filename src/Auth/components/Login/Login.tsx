@@ -14,20 +14,18 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthLoginSchema, { authLoginSchema } from '~/Auth/types/LoginSchema';
+import { login } from './actions';
+import { UnauthorizedException } from '~/Auth/exceptions';
 
 // props
 interface Props {
-  incorrectCredentials?: boolean;
   lastSubmittedAt?: number;
 }
 
 /**
  * Login component.
  */
-export default function AuthLogin({
-  incorrectCredentials,
-  lastSubmittedAt,
-}: Props) {
+export default function AuthLogin({ lastSubmittedAt }: Props) {
   const headingHtmlId = 'AuthLogin_h1';
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -40,6 +38,7 @@ export default function AuthLogin({
     resolver: zodResolver(authLoginSchema),
     mode: 'onChange',
   });
+  const [incorrectCredentials, setIncorrectCredentials] = useState(false);
 
   useEffect(() => {
     setLoading(false);
@@ -54,8 +53,15 @@ export default function AuthLogin({
     if (!(await trigger())) {
       return;
     }
+    setIncorrectCredentials(false);
     setLoading(true);
-    // submit(getValues(), { method: 'POST' });
+    const { username, password } = getValues();
+    const success = await login(username, password);
+    if (success === false) {
+      // explicit comparison to `false` needed
+      setIncorrectCredentials(true);
+    }
+    setLoading(false);
   }
 
   return (
@@ -63,7 +69,7 @@ export default function AuthLogin({
       <Typography id={headingHtmlId} variant="h4" component="h1" mb={1}>
         Login
       </Typography>
-      {incorrectCredentials && !loading && (
+      {incorrectCredentials && (
         <Alert severity="error" sx={{ display: 'inline-flex' }}>
           Incorrect username or password.
         </Alert>

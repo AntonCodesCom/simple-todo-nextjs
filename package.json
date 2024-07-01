@@ -10,25 +10,32 @@
     "build": "next build",
     "start": "node server-prod.js",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:e2e:dev": "NODE_ENV=development playwright test"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.6.0",
+    "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@mui/material-nextjs": "^5.15.11",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
+    "validator": "^13.12.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@playwright/test": "^1.45.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/validator": "^13.12.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "husky": "^9.0.11",
