@@ -1,11 +1,14 @@
 {
   "name": "simple-todo-nextjs",
   "version": "0.1.0",
+  "description": "A Todo app frontend built with Next.js and Material UI.",
+  "author": "AntonCodes",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server-dev.js",
     "build": "next build",
-    "start": "next start",
+    "start": "node server-prod.js",
     "lint": "next lint"
   },
   "dependencies": {
