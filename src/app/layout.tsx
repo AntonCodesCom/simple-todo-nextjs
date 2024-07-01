@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
 // font
-const roboto = Roboto({ weight: ['300', '400', '500', '700'] });
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
+});
 
 // metadata
 export const metadata: Metadata = {
