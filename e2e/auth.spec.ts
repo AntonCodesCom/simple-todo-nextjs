@@ -35,7 +35,7 @@ test.describe('Auth', () => {
   });
 
   // when user has already logged in
-  test.describe.skip('guest-only routes', () => {
+  test.describe('guest-only routes', () => {
     test('/login', async ({ page, request }) => {
       const { username, password } = alice;
       const accessToken = await fetchAccessToken({
@@ -182,38 +182,38 @@ test.describe('Auth', () => {
     });
   });
 
-  // // logout
-  // test('logout', async ({ page, request }) => {
-  //   const { username, password } = alice;
-  //   const accessToken = await fetchAccessToken({
-  //     request,
-  //     username,
-  //     password,
-  //     apiBaseUrl,
-  //   });
-  //   const sessionCookie = await generateSessionCookie(accessToken);
-  //   // generating "me" cookie
-  //   const { getMeSession, commitMeSession } = meSession();
-  //   const _meSession = await getMeSession();
-  //   _meSession.set('me', { username });
-  //   const rawMeCookie = await commitMeSession(_meSession);
-  //   const parts = rawMeCookie.split(';')[0].split('=');
-  //   const mockMeCookie = {
-  //     name: parts[0],
-  //     value: parts[1],
-  //   };
-  //   await page.context().addCookies([{ ...sessionCookie, url: appBaseUrl }]);
-  //   await page.context().addCookies([{ ...mockMeCookie, url: appBaseUrl }]);
-  //   await page.goto('/');
-  //   await page
-  //     .getByRole('link', {
-  //       name: `Logout (${username})`,
-  //     })
-  //     .click({ timeout: actionTimeout });
-  //   await expect(page).toHaveURL('/login');
-  //   // TODO: figure out whether we should assert the auth session cookie absence
-  //   const cookies = await page.context().cookies(appBaseUrl);
-  //   const actualMeCookie = cookies.find((x) => x.name === 'me');
-  //   expect(actualMeCookie).toBeUndefined();
-  // });
+  // logout
+  test('logout', async ({ page, request }) => {
+    const { username, password } = alice;
+    const accessToken = await fetchAccessToken({
+      request,
+      username,
+      password,
+      apiBaseUrl,
+    });
+    const sessionCookie = await generateSessionCookie(accessToken);
+    // // generating "me" cookie
+    // const { getMeSession, commitMeSession } = meSession();
+    // const _meSession = await getMeSession();
+    // _meSession.set('me', { username });
+    // const rawMeCookie = await commitMeSession(_meSession);
+    // const parts = rawMeCookie.split(';')[0].split('=');
+    // const mockMeCookie = {
+    //   name: parts[0],
+    //   value: parts[1],
+    // };
+    await page.context().addCookies([{ ...sessionCookie, url: appBaseUrl }]);
+    // await page.context().addCookies([{ ...mockMeCookie, url: appBaseUrl }]);
+    await page.goto('/');
+    await page
+      .getByRole('link', {
+        name: `Logout (${username})`,
+      })
+      .click({ timeout: actionTimeout });
+    await expect(page).toHaveURL('/login');
+    // // TODO: figure out whether we should assert the auth session cookie absence
+    // const cookies = await page.context().cookies(appBaseUrl);
+    // const actualMeCookie = cookies.find((x) => x.name === 'me');
+    // expect(actualMeCookie).toBeUndefined();
+  });
 });
