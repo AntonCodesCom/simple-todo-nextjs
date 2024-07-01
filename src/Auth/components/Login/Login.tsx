@@ -23,11 +23,6 @@ interface Props {
 
 /**
  * Login component.
- *
- * The form implemented as a `Form`. Client side validation is implemented
- * with `react-hook-form`. Workarounds were needed for both `Form` and
- * `react-hook-form` implementation, but this allowed us to stick with `Form`
- * thus simplifying the route logic.
  */
 export default function AuthLogin({
   incorrectCredentials,
