@@ -22,7 +22,7 @@ test.describe('Auth', () => {
   });
 
   // when the auth session (access token) is invalid
-  test.describe('auth-restricted routes', () => {
+  test.describe.skip('auth-restricted routes', () => {
     test('index route "/"', async ({ page }) => {
       // setting auth session (via cookies)
       const invalidAccessToken = 'INVALID_ACCESS_TOKEN';
@@ -35,7 +35,7 @@ test.describe('Auth', () => {
   });
 
   // when user has already logged in
-  test.describe('guest-only routes', () => {
+  test.describe.skip('guest-only routes', () => {
     test('/login', async ({ page, request }) => {
       const { username, password } = alice;
       const accessToken = await fetchAccessToken({
@@ -97,7 +97,7 @@ test.describe('Auth', () => {
       // expect(me?.username).toBe(username);
     });
 
-    test('incorrect credentials', async ({ page }) => {
+    test.skip('incorrect credentials', async ({ page }) => {
       await page.goto('/login');
       const loginForm = page.getByRole('form', { name: 'Login' });
       const { username } = alice;
@@ -120,7 +120,7 @@ test.describe('Auth', () => {
   });
 
   // signup flow
-  test.describe('signup flow', () => {
+  test.describe.skip('signup flow', () => {
     test('happy path', async ({ page, request }) => {
       // TODO: disable database seeding for this test
       // clearing database

@@ -14,6 +14,8 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthLoginSchema, { authLoginSchema } from '~/Auth/types/LoginSchema';
+import { login } from './actions';
+import { UnauthorizedException } from '~/Auth/exceptions';
 
 // props
 interface Props {
@@ -55,7 +57,16 @@ export default function AuthLogin({
       return;
     }
     setLoading(true);
-    // submit(getValues(), { method: 'POST' });
+    const { username, password } = getValues();
+    try {
+      await login(username, password);
+    } catch (err) {
+      if (err instanceof UnauthorizedException) {
+        // TODO: invalid credentials
+      } else {
+        throw err;
+      }
+    }
   }
 
   return (
