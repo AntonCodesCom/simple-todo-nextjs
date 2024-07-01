@@ -30,6 +30,7 @@ async function fetchMe(
   return authMeSchema.parse(data);
 }
 
+// server action
 async function me() {
   const { apiBaseUrl } = env();
   const authCookie = getAuthCookie();

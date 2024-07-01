@@ -97,7 +97,7 @@ test.describe('Auth', () => {
       // expect(me?.username).toBe(username);
     });
 
-    test.skip('incorrect credentials', async ({ page }) => {
+    test('incorrect credentials', async ({ page }) => {
       await page.goto('/login');
       const loginForm = page.getByRole('form', { name: 'Login' });
       const { username } = alice;

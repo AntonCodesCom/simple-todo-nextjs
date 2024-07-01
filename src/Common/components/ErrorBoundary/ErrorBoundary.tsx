@@ -19,6 +19,7 @@ interface Props {
 
 /**
  * Error boundary component without a layout.
+ * @todo `reset()`
  */
 export default function CommonErrorBoundary({ error }: Props) {
   const { isDev } = mode();

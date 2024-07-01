@@ -33,14 +33,23 @@ async function fetchLogin(
 }
 
 // server action
-export async function login(username: string, password: string): Promise<void> {
+export async function login(
+  username: string,
+  password: string,
+): Promise<boolean | never> {
   const { apiBaseUrl } = env();
-  const { accessToken, username: fetchedUsername } = await fetchLogin(
-    username,
-    password,
-    apiBaseUrl,
-  );
-  // console.log({ accessToken, fetchedUsername });
-  setAuthCookie(accessToken);
-  redirect('/');
+  try {
+    const { accessToken, username: fetchedUsername } = await fetchLogin(
+      username,
+      password,
+      apiBaseUrl,
+    );
+    setAuthCookie(accessToken);
+    return redirect('/');
+  } catch (err) {
+    if (err instanceof UnauthorizedException) {
+      return false;
+    }
+    throw err;
+  }
 }
