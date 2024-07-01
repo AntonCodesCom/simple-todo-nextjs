@@ -35,7 +35,7 @@ test.describe('Auth', () => {
   });
 
   // when user has already logged in
-  test.describe.skip('guest-only routes', () => {
+  test.describe('guest-only routes', () => {
     test('/login', async ({ page, request }) => {
       const { username, password } = alice;
       const accessToken = await fetchAccessToken({
