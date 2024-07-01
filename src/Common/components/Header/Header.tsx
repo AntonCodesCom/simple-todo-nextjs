@@ -17,7 +17,8 @@ interface Props {
 
 export default function CommonHeader({ username }: Props) {
   const theme = useTheme();
-  const sm = useMediaQuery(theme.breakpoints.up('sm'));
+  const xsPlus = useMediaQuery(theme.breakpoints.up('xs'));
+  const smPlus = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <AppBar position="static">
       <Toolbar component={Container}>
@@ -39,7 +40,7 @@ export default function CommonHeader({ username }: Props) {
           >
             Simple Todo
           </Typography>
-          {username && (
+          {username && xsPlus && (
             <Button
               aria-label={`Logout (${username})`}
               color="inherit"
@@ -48,7 +49,7 @@ export default function CommonHeader({ username }: Props) {
               sx={{ whiteSpace: 'nowrap' }}
             >
               Logout&nbsp;
-              {sm && (
+              {smPlus && (
                 <Typography
                   variant="button"
                   sx={{
@@ -60,7 +61,7 @@ export default function CommonHeader({ username }: Props) {
                   ({username}
                 </Typography>
               )}
-              {sm && ')'}
+              {smPlus && ')'}
             </Button>
           )}
         </Stack>
