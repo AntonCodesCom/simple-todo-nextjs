@@ -1,17 +1,10 @@
-// import { authSession } from '~/sessions';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { getAuthCookie, setAuthCookie } from '~/auth-cookie';
 
-export default async function generateSessionCookie(accessToken: string) {
-  // const { getAuthSession, commitAuthSession, authSessionName } = authSession();
-  // const session = await getAuthSession();
-  // session.set(authSessionName, accessToken);
-  // const rawCookie = await commitAuthSession(session);
-  // const parts = rawCookie.split(';')[0].split('=');
-  // return {
-  //   name: parts[0],
-  //   value: parts[1],
-  // };
-  return {
-    name: 'session',
-    value: 'TODO',
-  };
+export default async function generateSessionCookie(
+  accessToken: string,
+): Promise<RequestCookie> {
+  setAuthCookie(accessToken);
+  const cookie = getAuthCookie();
+  return cookie!;
 }

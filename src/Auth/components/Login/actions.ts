@@ -4,6 +4,7 @@ import { UnauthorizedException } from '~/Auth/exceptions';
 import AuthLoggedInSchema, {
   authLoggedInSchema,
 } from '~/Auth/types/LoggedInSchema';
+import { setAuthCookie } from '~/auth-cookie';
 import env from '~/env';
 
 // utility
@@ -39,6 +40,7 @@ export async function login(username: string, password: string): Promise<void> {
     password,
     apiBaseUrl,
   );
-  console.log({ accessToken, fetchedUsername });
+  // console.log({ accessToken, fetchedUsername });
+  setAuthCookie(accessToken);
   redirect('/');
 }
