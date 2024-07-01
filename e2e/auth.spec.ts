@@ -22,7 +22,7 @@ test.describe('Auth', () => {
   });
 
   // when the auth session (access token) is invalid
-  test.describe.skip('auth-restricted routes', () => {
+  test.describe('auth-restricted routes', () => {
     test('index route "/"', async ({ page }) => {
       // setting auth session (via cookies)
       const invalidAccessToken = 'INVALID_ACCESS_TOKEN';

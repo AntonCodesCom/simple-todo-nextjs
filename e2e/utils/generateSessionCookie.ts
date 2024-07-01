@@ -1,10 +1,10 @@
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { getAuthCookie, setAuthCookie } from '~/auth-cookie';
+import { authCookieName } from '~/auth-cookie';
 
 export default async function generateSessionCookie(
   accessToken: string,
-): Promise<RequestCookie> {
-  setAuthCookie(accessToken);
-  const cookie = getAuthCookie();
-  return cookie!;
+): Promise<{ name: string; value: string }> {
+  return {
+    name: authCookieName,
+    value: accessToken, // TODO: sign
+  };
 }
