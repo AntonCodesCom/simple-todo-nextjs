@@ -120,7 +120,7 @@ test.describe('Auth', () => {
   });
 
   // signup flow
-  test.describe.skip('signup flow', () => {
+  test.describe('signup flow', () => {
     test('happy path', async ({ page, request }) => {
       // TODO: disable database seeding for this test
       // clearing database
@@ -160,7 +160,7 @@ test.describe('Auth', () => {
       // expect(me?.username).toBe(username);
     });
 
-    test('username taken', async ({ page }) => {
+    test.skip('username taken', async ({ page }) => {
       await page.goto('/signup');
       const signupForm = page.getByRole('form', { name: 'Sign Up' });
       const username = 'alice'; // matters

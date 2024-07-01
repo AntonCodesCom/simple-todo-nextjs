@@ -11,21 +11,15 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthLoginSchema, { authLoginSchema } from '~/Auth/types/LoginSchema';
 import { login } from './actions';
-import { UnauthorizedException } from '~/Auth/exceptions';
-
-// props
-interface Props {
-  lastSubmittedAt?: number;
-}
 
 /**
  * Login component.
  */
-export default function AuthLogin({ lastSubmittedAt }: Props) {
+export default function AuthLogin() {
   const headingHtmlId = 'AuthLogin_h1';
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -39,10 +33,6 @@ export default function AuthLogin({ lastSubmittedAt }: Props) {
     mode: 'onChange',
   });
   const [incorrectCredentials, setIncorrectCredentials] = useState(false);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [lastSubmittedAt]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

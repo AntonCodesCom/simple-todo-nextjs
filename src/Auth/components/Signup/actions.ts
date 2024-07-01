@@ -1,20 +1,21 @@
-'use server';
 import { redirect } from 'next/navigation';
-import { UnauthorizedException } from '~/Auth/exceptions';
 import AuthLoggedInSchema, {
   authLoggedInSchema,
 } from '~/Auth/types/LoggedInSchema';
 import { setAuthCookie } from '~/auth-cookie';
 import env from '~/env';
 
+// exception
+export class ConflictException extends Error {}
+
 // utility
-async function fetchLogin(
+async function fetchSignup(
   username: string,
   password: string,
   apiBaseUrl: string,
 ): Promise<AuthLoggedInSchema> {
   const body = JSON.stringify({ username, password });
-  const url = new URL('auth/login', apiBaseUrl);
+  const url = new URL('auth/signup', apiBaseUrl);
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -23,8 +24,8 @@ async function fetchLogin(
     body,
   });
   if (!res.ok) {
-    if (res.status === 401) {
-      throw new UnauthorizedException();
+    if (res.status === 409) {
+      throw new ConflictException();
     }
     throw new Error('HTTP error occurred while fetching `POST /auth/login`.');
   }
@@ -33,13 +34,13 @@ async function fetchLogin(
 }
 
 // server action
-export async function login(
+export async function signup(
   username: string,
   password: string,
 ): Promise<boolean | never> {
   const { apiBaseUrl } = env();
   try {
-    const { accessToken, username: fetchedUsername } = await fetchLogin(
+    const { accessToken, username: fetchedUsername } = await fetchSignup(
       username,
       password,
       apiBaseUrl,
@@ -48,7 +49,7 @@ export async function login(
     setAuthCookie(accessToken);
     return redirect('/');
   } catch (err) {
-    if (err instanceof UnauthorizedException) {
+    if (err instanceof ConflictException) {
       return false;
     }
     throw err;
