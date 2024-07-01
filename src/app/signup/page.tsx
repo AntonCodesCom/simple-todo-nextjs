@@ -1,3 +1,10 @@
+import AuthSignup from '~/Auth/components/Signup';
+import CommonLayout from '~/Common/components/Layout';
+
 export default function RouteSignup() {
-  return <div>Signup route</div>;
+  return (
+    <CommonLayout>
+      <AuthSignup />
+    </CommonLayout>
+  );
 }

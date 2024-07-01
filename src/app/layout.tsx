@@ -1,3 +1,5 @@
+import { CssBaseline } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
@@ -23,7 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <AppRouterCacheProvider>
+          <CssBaseline />
+          {children}
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
