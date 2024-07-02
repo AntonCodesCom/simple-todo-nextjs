@@ -12,6 +12,9 @@ This application replicates the functionality of the [Remix-based frontend app](
 
 1.  Clone this repository.
 
+        git clone https://github.com/AntonCodesCom/simple-todo-nextjs
+        cd simple-todo-nextjs
+
 1.  Install dependencies:
 
         npm install
@@ -21,3 +24,16 @@ This application replicates the functionality of the [Remix-based frontend app](
         npm run dev
 
 The app will be opened on `localhost:3002`.
+
+## End-to-end testing
+
+Running Playwright end-to-end tests:
+
+- launch the API backend in non-production mode on `localhost:3000` (see [here](https://github.com/AntonCodesCom/simple-todo-nest?tab=readme-ov-file#running-the-app));
+- launch this app in development mode;
+
+        npm run dev
+
+- run the e2e tests:
+
+        npm run test:e2e:dev
