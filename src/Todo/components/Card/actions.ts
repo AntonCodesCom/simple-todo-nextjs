@@ -1,4 +1,5 @@
 'use server';
+import { revalidateTag } from 'next/cache';
 import { UnauthorizedException } from '~/Auth/exceptions';
 import { getAuthCookie } from '~/auth-cookie';
 import env from '~/env';
@@ -54,4 +55,37 @@ export async function editTodo(id: string, label: string) {
   }
   const accessToken = authCookie.value;
   await updateTodo({ id, accessToken, label, apiBaseUrl });
+}
+
+// utility
+async function fetchDeleteTodo(
+  id: string,
+  accessToken: string,
+  apiBaseUrl: string,
+): Promise<void> {
+  const url = new URL(`todo/${id}`, apiBaseUrl);
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(
+      'Unexpected error occurred while requesting DELETE /todo/:id.',
+    );
+  }
+}
+
+// server action
+export async function deleteTodo(id: string) {
+  const { apiBaseUrl } = env();
+  const authCookie = getAuthCookie();
+  if (!authCookie) {
+    throw new UnauthorizedException();
+  }
+  const accessToken = authCookie.value;
+  await fetchDeleteTodo(id, accessToken, apiBaseUrl);
+  revalidateTag('todos');
 }

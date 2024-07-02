@@ -195,7 +195,7 @@ test.describe('Todo', () => {
   });
 
   // deletion
-  test.skip('deletion', async ({ page, request }) => {
+  test('deletion', async ({ page, request }) => {
     const listitems = await getTodoListItems(page);
     const todoToDelete = faker.helpers.arrayElement(listitems);
     const todoToDeleteId = await todoToDelete.getAttribute('id');
