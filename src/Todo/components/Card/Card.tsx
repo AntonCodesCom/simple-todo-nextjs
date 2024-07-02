@@ -4,7 +4,7 @@ import { useState } from 'react';
 import TodoCardDelete from './Delete';
 import TodoCardCheck from './Check';
 import TodoCardEdit from './Edit';
-import { toggleTodo } from './actions';
+import { editTodo, toggleTodo } from './actions';
 
 // props
 interface Props {
@@ -17,7 +17,6 @@ interface Props {
 export default function TodoCard({ todo }: Props) {
   const { id, label } = todo;
   const [editingActive, setEditingActive] = useState(false);
-  // const updateFetcher = useFetcher();
   // const deleteFetcher = useFetcher();
   // const loading = checkLoading || updateLoading || deleteLoading;
   const [loading, setLoading] = useState(false);
@@ -33,18 +32,15 @@ export default function TodoCard({ todo }: Props) {
     setLoading(false);
   }
 
-  function handleEdit(updatedLabel: string) {
+  async function handleEdit(updatedLabel: string) {
     if (loading) {
       return;
     }
     setEditingActive(false);
     setLabel(updatedLabel);
-    // updateFetcher.submit(
-    //   {
-    //     label: updatedLabel,
-    //   },
-    //   { action: `update/${id}`, method: 'POST' },
-    // );
+    setLoading(true);
+    await editTodo(id, updatedLabel);
+    setLoading(false);
   }
 
   function handleDelete() {

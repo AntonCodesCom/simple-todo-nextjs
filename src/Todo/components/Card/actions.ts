@@ -44,3 +44,14 @@ export async function toggleTodo(id: string, done: boolean) {
   const accessToken = authCookie.value;
   await updateTodo({ id, accessToken, done, apiBaseUrl });
 }
+
+// server action
+export async function editTodo(id: string, label: string) {
+  const { apiBaseUrl } = env();
+  const authCookie = getAuthCookie();
+  if (!authCookie) {
+    throw new UnauthorizedException();
+  }
+  const accessToken = authCookie.value;
+  await updateTodo({ id, accessToken, label, apiBaseUrl });
+}

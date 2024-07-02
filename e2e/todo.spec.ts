@@ -158,7 +158,7 @@ test.describe('Todo', () => {
   });
 
   // editing
-  test.skip('editing', async ({ page, request }) => {
+  test('editing', async ({ page, request }) => {
     const listitems = await getTodoListItems(page);
     const todoToEdit = faker.helpers.arrayElement(listitems);
     const todoToEditId = await todoToEdit.getAttribute('id');
@@ -176,11 +176,11 @@ test.describe('Todo', () => {
     // waiting for loading state to begin
     await page
       .locator(`[role=listitem][id="${todoToEditId}"][aria-disabled=true]`)
-      .waitFor();
+      .waitFor({ timeout: actionTimeout }); // TODO (maybe): different timeout value
     // waiting for loading state to finish
     await page
       .locator(`[role=listitem][id="${todoToEditId}"][aria-disabled=false]`)
-      .waitFor();
+      .waitFor({ timeout: actionTimeout }); // TODO (maybe): different timeout value
     await expect(todoToEdit).toHaveAccessibleName(editedTodoLabel);
     // asserting the target Todo has its label updated on the backend
     const backendTodos = await fetchBackendTodos(
