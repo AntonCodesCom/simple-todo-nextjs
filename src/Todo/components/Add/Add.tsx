@@ -2,8 +2,8 @@
 import { Add } from '@mui/icons-material';
 import { Button, CircularProgress, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-// import { useFetcher } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { addTodo } from './actions';
 
 // sub-component
 function LoadingIcon() {
@@ -18,21 +18,24 @@ function LoadingIcon() {
  * "Add todo" form component.
  */
 export default function TodoAdd() {
-  // const fetcher = useFetcher();
   const [label, setLabel] = useState('');
-  // const loading = fetcher.state === 'submitting' || fetcher.state === 'loading';
-  const loading = false; // TODO
-
-  // useEffect(() => {
-  //   if (fetcher.state === 'idle') {
-  //     setLabel('');
-  //   }
-  // }, [fetcher.state]);
+  const [loading, setLoading] = useState(false);
 
   const Icon = () => (loading ? <LoadingIcon /> : <Add />);
 
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    await addTodo(label);
+    setLabel('');
+    setLoading(false);
+  }
+
   return (
-    <form method="POST" action="add" aria-label="Add Todo">
+    <form aria-label="Add Todo" onSubmit={handleSubmit}>
       <Stack direction="row" gap={{ xs: 0.25, sm: 0.5 }}>
         <TextField
           name="label"

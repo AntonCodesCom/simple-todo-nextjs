@@ -36,6 +36,7 @@ async function fetchTodos(
     headers: {
       authorization: `Bearer ${accessToken}`,
     },
+    next: { tags: ['todos'] },
   });
   if (!res.ok) {
     throw new Error('Unexpected error occurred while fetching todos.');

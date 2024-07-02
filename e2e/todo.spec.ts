@@ -87,7 +87,7 @@ test.describe('Todo', () => {
   });
 
   // adding
-  test.skip('adding', async ({ page, request }) => {
+  test('adding', async ({ page, request }) => {
     const existingListitemIds = await Promise.all(
       (await getTodoListItems(page)).map(
         async (x) => await x.getAttribute('id'),
