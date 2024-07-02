@@ -1,3 +1,4 @@
+'use server';
 import { redirect } from 'next/navigation';
 import AuthLoggedInSchema, {
   authLoggedInSchema,
@@ -6,7 +7,7 @@ import { setAuthCookie } from '~/auth-cookie';
 import env from '~/env';
 
 // exception
-export class ConflictException extends Error {}
+class ConflictException extends Error {}
 
 // utility
 async function fetchSignup(

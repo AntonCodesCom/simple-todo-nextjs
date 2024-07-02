@@ -11,8 +11,10 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthSignupSchema, { authSignupSchema } from '~/Auth/types/SignupSchema';
+import { signup } from './actions';
 
 // props
 interface Props {
@@ -31,15 +33,16 @@ export default function AuthSignup({ takenUsername }: Props) {
   } = useForm<AuthSignupSchema>({
     resolver: zodResolver(authSignupSchema),
   });
-  // const loading = fetcher.state === 'submitting' || fetcher.state === 'loading';
-  const loading = false; // TODO
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmitSuccess(data: AuthSignupSchema) {
+  async function handleSubmitSuccess(data: AuthSignupSchema) {
     if (loading) {
       return;
     }
-    // fetcher.submit(data, { method: 'POST' });
-    // TODO: submit
+    setLoading(true);
+    const { username, password } = data;
+    await signup(username, password);
+    setLoading(false);
   }
 
   return (
