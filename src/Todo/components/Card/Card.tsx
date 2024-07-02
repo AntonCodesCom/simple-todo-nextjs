@@ -1,10 +1,10 @@
 'use client';
 import TodoItem from '~/Todo/types/Item';
 import { useState } from 'react';
-// import { useFetcher } from '@remix-run/react';
 import TodoCardDelete from './Delete';
 import TodoCardCheck from './Check';
 import TodoCardEdit from './Edit';
+import { toggleTodo } from './actions';
 
 // props
 interface Props {
@@ -17,24 +17,20 @@ interface Props {
 export default function TodoCard({ todo }: Props) {
   const { id, label } = todo;
   const [editingActive, setEditingActive] = useState(false);
-  // const checkFetcher = useFetcher();
   // const updateFetcher = useFetcher();
   // const deleteFetcher = useFetcher();
   // const loading = checkLoading || updateLoading || deleteLoading;
-  const loading = false; // TODO
+  const [loading, setLoading] = useState(false);
   const deleteLoading = false; // TODO
   const [_label, setLabel] = useState(label);
 
-  function handleCheckToggle(_done: boolean) {
+  async function handleCheckToggle(_done: boolean) {
     if (loading) {
       return;
     }
-    // checkFetcher.submit(
-    //   {
-    //     done: _done,
-    //   },
-    //   { action: `update/${id}`, method: 'POST' },
-    // );
+    setLoading(true);
+    await toggleTodo(id, _done);
+    setLoading(false);
   }
 
   function handleEdit(updatedLabel: string) {

@@ -124,7 +124,7 @@ test.describe('Todo', () => {
   });
 
   // toggling
-  test.skip('toggling', async ({ page, request }) => {
+  test('toggling', async ({ page, request }) => {
     const listitems = await getTodoListItems(page);
     const todoToToggle = faker.helpers.arrayElement(listitems);
     const todoToToggleId = await todoToToggle.getAttribute('id');
@@ -137,11 +137,11 @@ test.describe('Todo', () => {
     // waiting for loading state to begin
     await page
       .locator(`[role=listitem][id="${todoToToggleId}"][aria-disabled=true]`)
-      .waitFor();
+      .waitFor({ timeout: actionTimeout }); // TODO (maybe): different timeout value
     // waiting for loading state to finish
     await page
       .locator(`[role=listitem][id="${todoToToggleId}"][aria-disabled=false]`)
-      .waitFor();
+      .waitFor({ timeout: actionTimeout }); // TODO (maybe): different timeout value
     await expect(todoToToggleCheckbox).toBeChecked({
       checked: todoToToggleExpectedChecked,
     });
