@@ -160,7 +160,7 @@ test.describe('Auth', () => {
       // expect(me?.username).toBe(username);
     });
 
-    test.skip('username taken', async ({ page }) => {
+    test('username taken', async ({ page }) => {
       await page.goto('/signup');
       const signupForm = page.getByRole('form', { name: 'Sign Up' });
       const username = 'alice'; // matters

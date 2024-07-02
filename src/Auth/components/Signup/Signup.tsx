@@ -16,15 +16,10 @@ import { useForm } from 'react-hook-form';
 import AuthSignupSchema, { authSignupSchema } from '~/Auth/types/SignupSchema';
 import { signup } from './actions';
 
-// props
-interface Props {
-  takenUsername?: string;
-}
-
 /**
  * Signup component.
  */
-export default function AuthSignup({ takenUsername }: Props) {
+export default function AuthSignup() {
   const headingHtmlId = 'RouteSignup_h1';
   const {
     register,
@@ -34,14 +29,20 @@ export default function AuthSignup({ takenUsername }: Props) {
     resolver: zodResolver(authSignupSchema),
   });
   const [loading, setLoading] = useState(false);
+  const [takenUsername, setTakenUsername] = useState<string | null>(null);
 
   async function handleSubmitSuccess(data: AuthSignupSchema) {
     if (loading) {
       return;
     }
+    setTakenUsername(null);
     setLoading(true);
     const { username, password } = data;
-    await signup(username, password);
+    const success = await signup(username, password);
+    if (success === false) {
+      // explicit comparison with `false` needed
+      setTakenUsername(username);
+    }
     setLoading(false);
   }
 
