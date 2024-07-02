@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { UnauthorizedException } from '~/Auth/exceptions';
 import fetchMe from '~/Auth/utils/fetchMe';
 import CommonLayout from '~/Common/components/Layout';
+import TodoMain from '~/Todo/components/Main';
 import { getAuthCookie } from '~/auth-cookie';
 import env from '~/env';
 
@@ -32,7 +33,7 @@ export default async function RouteIndex() {
   const username = await me();
   return (
     <CommonLayout username={username}>
-      <Typography variant="body1">Index route</Typography>
+      <TodoMain todos={[]} />
     </CommonLayout>
   );
 }

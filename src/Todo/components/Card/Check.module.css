@@ -1,0 +1,4 @@
+.loadingVisible > * {
+  opacity: 0.38; /* TODO: theme value */
+  transition: 0.15s ease opacity;
+}
