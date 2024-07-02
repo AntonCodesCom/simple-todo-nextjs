@@ -120,7 +120,7 @@ test.describe('Auth', () => {
   });
 
   // signup flow
-  test.describe.skip('signup flow', () => {
+  test.describe('signup flow', () => {
     test('happy path', async ({ page, request }) => {
       // TODO: disable database seeding for this test
       // clearing database

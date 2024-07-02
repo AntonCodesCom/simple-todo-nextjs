@@ -11,18 +11,15 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthSignupSchema, { authSignupSchema } from '~/Auth/types/SignupSchema';
-
-// props
-interface Props {
-  takenUsername?: string;
-}
+import { signup } from './actions';
 
 /**
  * Signup component.
  */
-export default function AuthSignup({ takenUsername }: Props) {
+export default function AuthSignup() {
   const headingHtmlId = 'RouteSignup_h1';
   const {
     register,
@@ -31,15 +28,22 @@ export default function AuthSignup({ takenUsername }: Props) {
   } = useForm<AuthSignupSchema>({
     resolver: zodResolver(authSignupSchema),
   });
-  // const loading = fetcher.state === 'submitting' || fetcher.state === 'loading';
-  const loading = false; // TODO
+  const [loading, setLoading] = useState(false);
+  const [takenUsername, setTakenUsername] = useState<string | null>(null);
 
-  function handleSubmitSuccess(data: AuthSignupSchema) {
+  async function handleSubmitSuccess(data: AuthSignupSchema) {
     if (loading) {
       return;
     }
-    // fetcher.submit(data, { method: 'POST' });
-    // TODO: submit
+    setTakenUsername(null);
+    setLoading(true);
+    const { username, password } = data;
+    const success = await signup(username, password);
+    if (success === false) {
+      // explicit comparison with `false` needed
+      setTakenUsername(username);
+    }
+    setLoading(false);
   }
 
   return (
