@@ -1,8 +1,9 @@
-import { Typography } from '@mui/material';
 import { redirect } from 'next/navigation';
 import { UnauthorizedException } from '~/Auth/exceptions';
 import fetchMe from '~/Auth/utils/fetchMe';
 import CommonLayout from '~/Common/components/Layout';
+import TodoMain from '~/Todo/components/Main';
+import TodoItem, { todoItemSchema } from '~/Todo/types/Item';
 import { getAuthCookie } from '~/auth-cookie';
 import env from '~/env';
 
@@ -25,14 +26,47 @@ async function me() {
   }
 }
 
+// utility
+async function fetchTodos(
+  accessToken: string,
+  apiBaseUrl: string,
+): Promise<TodoItem[]> {
+  const url = new URL('todo', apiBaseUrl);
+  const res = await fetch(url, {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+    },
+    next: { tags: ['todos'] },
+  });
+  if (!res.ok) {
+    throw new Error('Unexpected error occurred while fetching todos.');
+  }
+  const data = await res.json();
+  return todoItemSchema
+    .array()
+    .parse(data)
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+}
+
+// server action
+async function getTodos(): Promise<TodoItem[]> {
+  const { apiBaseUrl } = env();
+  const authCookie = getAuthCookie();
+  if (!authCookie) {
+    throw new UnauthorizedException();
+  }
+  return await fetchTodos(authCookie.value, apiBaseUrl);
+}
+
 /**
  * Index route component.
  */
 export default async function RouteIndex() {
   const username = await me();
+  const todos = await getTodos();
   return (
     <CommonLayout username={username}>
-      <Typography variant="body1">Index route</Typography>
+      <TodoMain todos={todos} />
     </CommonLayout>
   );
 }
